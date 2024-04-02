@@ -1,0 +1,48 @@
+#include <stdio.h>
+
+typedef struct Process {
+    int id;         
+    int burstTime;  
+    int remainingTime; 
+} Process;
+
+
+void RoundRobin(Process processes[], int n, int q) {
+    int Time = 0; 
+    int Process = 0;
+
+    
+    while (Process < n) {
+        
+        for (int i = 0; i < n; i++) {
+        
+            if (processes[i].remainingTime > 0) {
+                
+                int executionTime = (processes[i].remainingTime < q) ? processes[i].remainingTime : q;
+                processes[i].remainingTime -= executionTime;
+                Time += executionTime;
+                printf("Process %d executed for %d units\n", processes[i].id, executionTime);
+                if (processes[i].remainingTime == 0) {
+                    printf("Process %d completed\n", processes[i].id);
+                    Process++;
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    
+    Process processes[] = {
+        {1, 10, 10},
+        {2, 5, 5},
+        {3, 8, 8},
+        {4, 2, 2}
+    };
+    int n = sizeof(processes) / sizeof(processes[0]); 
+    int q= 2; 
+
+    RoundRobin(processes, n, q);
+
+    return 0;
+}
